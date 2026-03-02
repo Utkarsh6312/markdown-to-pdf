@@ -1,0 +1,61 @@
+﻿@page {
+  size: A4;
+  margin: 1in;
+}
+
+body {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11pt;
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #111827;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.1em 0;
+}
+
+th, td {
+  border: 1px solid #d1d5db;
+  padding: 0.55em 0.7em;
+}
+
+th {
+  background: #f3f4f6;
+}
+
+tr:nth-child(even) td {
+  background: #fafafa;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+pre {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.9em;
+  overflow-x: auto;
+}
+
+code {
+  font-family: "Cascadia Mono", "Consolas", "Liberation Mono", monospace;
+  background: #f3f4f6;
+  border-radius: 4px;
+  padding: 0.1em 0.25em;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+}
