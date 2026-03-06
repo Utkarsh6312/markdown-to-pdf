@@ -1,40 +1,66 @@
-﻿# Markdown/PDF CLI (`md2pdf.py`)
+# md2pdf
 
-Production-grade Python CLI that supports two directions:
-- **Markdown -> PDF** (`md2pdf`)
-- **PDF -> Markdown** (`pdf2md`) with **image extraction** (Marker) and optional **Pandoc cleanup**
+This repo now contains two delivery modes:
+
+- A Python CLI in [md2pdf.py](/c:/Users/ASUS/Desktop/projects/p6 markdown to pdff/md2pdf.py)
+- A static browser app in [index.html](/c:/Users/ASUS/Desktop/projects/p6 markdown to pdff/index.html)
+
+The browser app is the simplest deployment target if you want a public site similar to an online converter with no server, no backend, and no database.
+
+## Static Site
+
+Files:
+
+- [index.html](/c:/Users/ASUS/Desktop/projects/p6 markdown to pdff/index.html)
+- [app.js](/c:/Users/ASUS/Desktop/projects/p6 markdown to pdff/app.js)
+- [site.css](/c:/Users/ASUS/Desktop/projects/p6 markdown to pdff/site.css)
+- [\.nojekyll](/c:/Users/ASUS/Desktop/projects/p6 markdown to pdff/.nojekyll)
+
+What it does:
+
+- Runs fully in the browser
+- Accepts pasted Markdown or local `.md` files
+- Shows a live preview
+- Exports directly to PDF client-side
+- Can be hosted on GitHub Pages as static files
+
+GitHub Pages deployment:
+
+1. Push the repo to GitHub.
+2. In the repo settings, enable Pages from the main branch root.
+3. Open the generated Pages URL.
+
+The page depends on CDN versions of `marked`, `DOMPurify`, and `html2pdf.js`.
+
+## Python CLI
 
 ## Features
 
-- Single CLI for both directions
-- Auto mode detection from input extension
-  - `.md/.markdown` -> `md2pdf`
-  - `.pdf` -> `pdf2md`
-- Pandoc-based PDF generation (default) with LaTeX support
-- WeasyPrint fallback backend for HTML/CSS rendering
-- Marker-based PDF to Markdown conversion
-- Extracted images copied with relative links in generated Markdown
-- Optional custom image directory (`--images-dir`)
-- Optional OCR and LLM flags for Marker (`--force-ocr`, `--use-llm`)
+- Markdown (`.md`, `.markdown`) to PDF conversion
+- Pandoc-based PDF generation with LaTeX math support
+- WeasyPrint backend for HTML/CSS rendering
+- Optional custom CSS for HTML/CSS-capable PDF engines
+- Interactive mode for local usage
 
 ## Project Files
 
 - `md2pdf.py` - CLI implementation
 - `requirements.txt` - Python dependencies
-- `style.css` - Optional CSS template for md2pdf (HTML/CSS-compatible engines)
+- `style.css` - Optional CSS template for HTML/CSS-capable PDF engines
 
 ## Prerequisites
 
 ### Python
+
 - Python 3.10+
 - `pip`
 
 ### External tools
+
 - **Pandoc** (required)
 - **TeX engine** for Pandoc PDF rendering (recommended: XeLaTeX via MiKTeX/TeX Live)
-- **Marker CLI** (`marker_single`) from `marker-pdf` package
 
-Windows quick install (external tools):
+Windows quick install:
 
 ```powershell
 winget install --id JohnMacFarlane.Pandoc -e
@@ -65,94 +91,55 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Interactive mode (recommended)
+### Interactive mode
 
-Run without arguments and the tool will ask for input path, mode, output path, and mode-specific options:
+Run without arguments and the tool will ask for input path, output path, and rendering options:
 
 ```powershell
 python md2pdf.py
 ```
 
-## 1) Markdown -> PDF
-
-Basic:
+### Basic conversion
 
 ```powershell
 python md2pdf.py -i ".\docs\notes.md"
 ```
 
-Explicit mode/backend:
+### Pandoc backend with explicit engine
 
 ```powershell
-python md2pdf.py -i ".\docs\notes.md" --mode md2pdf --backend pandoc --pdf-engine xelatex
+python md2pdf.py -i ".\docs\notes.md" --backend pandoc --pdf-engine xelatex
 ```
 
-Reduce page borders (use more page area):
+### Smaller margins
 
 ```powershell
-python md2pdf.py -i ".\docs\notes.md" --mode md2pdf --page-margin 0.25in
+python md2pdf.py -i ".\docs\notes.md" --page-margin 0.25in
 ```
 
-Use WeasyPrint backend with custom CSS:
+### WeasyPrint backend with custom CSS
 
 ```powershell
-python md2pdf.py -i ".\docs\notes.md" --mode md2pdf --backend weasyprint -c ".\style.css"
-```
-
-## 2) PDF -> Markdown + Images
-
-Basic:
-
-```powershell
-python md2pdf.py -i ".\docs\paper.pdf"
-```
-
-Output defaults to `paper.md` beside the input.
-
-Custom markdown output:
-
-```powershell
-python md2pdf.py -i ".\docs\paper.pdf" -o ".\out\paper.md"
-```
-
-Custom image directory:
-
-```powershell
-python md2pdf.py -i ".\docs\paper.pdf" -o ".\out\paper.md" --images-dir ".\out\images"
-```
-
-Force OCR for scanned PDFs:
-
-```powershell
-python md2pdf.py -i ".\docs\scan.pdf" --mode pdf2md --force-ocr
-```
-
-Skip Pandoc cleanup of Marker markdown:
-
-```powershell
-python md2pdf.py -i ".\docs\paper.pdf" --skip-pandoc-clean
+python md2pdf.py -i ".\docs\notes.md" --backend weasyprint -c ".\style.css"
 ```
 
 ## CLI Arguments
 
-- `-i, --input` (required): source `.md/.markdown` or `.pdf`
-- `-o, --output` (optional): output path (`.pdf` for md2pdf, `.md` for pdf2md)
-- `--mode` (optional): `auto` (default), `md2pdf`, `pdf2md`
-- `-c, --css` (optional): custom CSS for md2pdf
-- `--backend` (optional): md2pdf backend `pandoc` (default) or `weasyprint`
-- `--pdf-engine` (optional): Pandoc engine for md2pdf (default `xelatex`)
-- `--page-margin` (optional): md2pdf page margin (default `0.45in`)
-- `--images-dir` (optional): target folder for extracted images in pdf2md
-- `--force-ocr` (optional): force OCR in Marker for pdf2md
-- `--use-llm` (optional): use Marker LLM mode when configured
-- `--skip-pandoc-clean` (optional): do not normalize Marker output with Pandoc
+- `-i, --input` (required): source `.md` or `.markdown`
+- `-o, --output` (optional): PDF output path; defaults to the input name with `.pdf`
+- `-c, --css` (optional): custom CSS for HTML/CSS-capable PDF engines
+- `--backend` (optional): `pandoc` (default) or `weasyprint`
+- `--pdf-engine` (optional): Pandoc engine for `--backend pandoc` (default `xelatex`)
+- `--page-margin` (optional): page margin override (default `0.45in`)
+- `--font-size` (optional): CSS-capable base font size (default `12.5pt`)
+- `--latex-font-size` (optional): Pandoc LaTeX font size (default `12pt`)
 - `--log-level` (optional): `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
 
-## LaTeX and Images Notes
+## Notes
 
-- **Markdown -> PDF**: LaTeX math is handled by Pandoc + TeX engine.
-- **PDF -> Markdown**: Marker attempts to recover equations into markdown/LaTeX where possible.
-- Extracted image links are kept relative to the generated markdown output.
+- LaTeX math is handled by Pandoc plus your selected PDF engine.
+- If you use WeasyPrint, local image paths are resolved relative to the input file directory.
+- The CLI rejects non-Markdown input files.
 
 ## Common Errors
 
@@ -167,22 +154,6 @@ pandoc --version
 ### `xelatex not found`
 
 Install MiKTeX/TeX Live or choose another `--pdf-engine`.
-
-### `Marker executable not found`
-
-Install Marker package:
-
-```powershell
-pip install marker-pdf
-```
-
-Then verify:
-
-```powershell
-marker_single --help
-```
-
-Note: first-time Marker setup can be large and may take a while because it pulls ML dependencies/models.
 
 ### WeasyPrint GTK error on Windows (`libgobject-2.0-0`)
 
@@ -205,8 +176,7 @@ cd "c:\Users\ASUS\Desktop\projects\p6 markdown to pdff"
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-python md2pdf.py -i ".\docs\paper.pdf" -o ".\out\paper.md" --images-dir ".\out\images"
-python md2pdf.py -i ".\out\paper.md" -o ".\out\paper.pdf" --mode md2pdf --backend pandoc --pdf-engine xelatex
+python md2pdf.py -i ".\sample.md" -o ".\out\sample.pdf" --backend pandoc --pdf-engine xelatex
 ```
 
 ## Deactivate venv

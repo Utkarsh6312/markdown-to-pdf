@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>md2pdf Studio</title>
+    <meta
+      name="description"
+      content="Browser-only Markdown to PDF converter. No uploads, no backend, no database."
+    >
+    <meta property="og:title" content="md2pdf Studio">
+    <meta
+      property="og:description"
+      content="Convert Markdown to PDF directly in the browser. No server, no backend, no database."
+    >
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="./site.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.7/dist/purify.min.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top">md2pdf Studio</a>
+        <nav class="topnav">
+          <a href="#studio">Studio</a>
+          <a href="#how">How it works</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+      </header>
+
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">Local-first Markdown to PDF</p>
+          <h1>Ship a clean PDF from raw Markdown in one tab.</h1>
+          <p class="lede">
+            Open a Markdown file, tune the page look, preview the result, and export the PDF directly in the browser.
+            Nothing leaves the device.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#studio">Open Studio</a>
+            <a class="ghost-link" href="#faq">See limits</a>
+          </div>
+        </div>
+        <aside class="hero-note">
+          <div class="hero-card">
+            <strong>Privacy by default</strong>
+            <p>No uploads, no API, no backend, no database.</p>
+          </div>
+          <div class="hero-card">
+            <strong>Static hosting</strong>
+            <p>Deploy as plain files on GitHub Pages, Netlify, or any CDN.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="feature-strip">
+        <article>
+          <h2>Browser only</h2>
+          <p>Everything runs client-side with JavaScript libraries loaded in the page.</p>
+        </article>
+        <article>
+          <h2>Live preview</h2>
+          <p>See headings, tables, code blocks, quotes, and layout updates before export.</p>
+        </article>
+        <article>
+          <h2>Static deploy</h2>
+          <p>No build server required. The site works as a simple static frontend.</p>
+        </article>
+      </section>
+
+      <section class="workspace-wrap" id="studio">
+        <div class="section-heading">
+          <p class="eyebrow">Studio</p>
+          <h2>Convert Markdown to PDF</h2>
+        </div>
+
+        <section class="privacy-card">
+          <p>
+            This tool runs completely in your browser. No server, no backend, no database, no uploads.
+          </p>
+        </section>
+
+        <section class="workspace">
+          <section class="panel controls-panel">
+            <div class="panel-header">
+              <h2>Source</h2>
+              <div class="inline-actions">
+                <button id="openFileButton" class="ghost-button" type="button">Upload .md</button>
+                <button id="sampleButton" class="ghost-button" type="button">Load sample</button>
+              </div>
+            </div>
+
+            <label class="upload-zone" for="fileInput">
+              <input id="fileInput" type="file" accept=".md,.markdown,text/markdown">
+              <span class="upload-title">Choose Markdown file</span>
+              <span class="upload-copy">or keep typing below</span>
+            </label>
+
+            <label class="field">
+              <span>Filename</span>
+              <input id="filenameInput" type="text" value="document.pdf" spellcheck="false">
+            </label>
+
+            <label class="field">
+              <span>Markdown</span>
+              <textarea id="markdownInput" rows="14" spellcheck="false"></textarea>
+            </label>
+          </section>
+
+          <section class="panel settings-panel">
+            <div class="panel-header">
+              <h2>Export</h2>
+              <div id="statusPill" class="status-pill">Ready</div>
+            </div>
+
+            <div class="actions">
+              <button id="downloadButton" class="primary-button" type="button">Download PDF</button>
+            </div>
+
+            <p class="helper-copy">
+              This opens the browser print dialog. Choose <strong>Save as PDF</strong> to export.
+            </p>
+          </section>
+        </section>
+
+        <section class="preview-wrap">
+          <div class="preview-toolbar">
+            <h2>Preview</h2>
+            <span id="metaText">0 characters</span>
+          </div>
+          <section id="previewFrame" class="preview-frame" data-theme="paper">
+            <article id="previewDocument" class="preview-document"></article>
+          </section>
+        </section>
+      </section>
+
+      <section class="info-grid" id="how">
+        <article class="info-card">
+          <p class="eyebrow">How it works</p>
+          <h2>Three-step flow</h2>
+          <ol>
+            <li>Paste Markdown or open a local `.md` file.</li>
+            <li>Review the live preview.</li>
+            <li>Use Save as PDF from the print dialog.</li>
+          </ol>
+        </article>
+      </section>
+
+      <section class="faq" id="faq">
+        <div class="section-heading">
+          <p class="eyebrow">FAQ</p>
+          <h2>Practical limits</h2>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary>Does this upload my Markdown anywhere?</summary>
+            <p>No. The conversion happens in the browser on the current device.</p>
+          </details>
+          <details>
+            <summary>Will complex Markdown always match Pandoc output?</summary>
+            <p>No. This is a browser renderer, so results are designed to look good, not to exactly match a CLI pipeline.</p>
+          </details>
+          <details>
+            <summary>Can I host this without a server?</summary>
+            <p>Yes. It is a static site and can be hosted directly on GitHub Pages or any static file host.</p>
+          </details>
+          <details>
+            <summary>What is the main limitation?</summary>
+            <p>Very large documents or image-heavy content can be slower because PDF rendering happens fully in the browser.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
