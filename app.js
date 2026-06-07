@@ -147,7 +147,8 @@ async function copyEntireDocumentAsImage() {
       scale: 2,
       useCORS: true,
       logging: false,
-      backgroundColor: window.getComputedStyle(doc).backgroundColor || "#ffffff"
+      backgroundColor: window.getComputedStyle(doc).backgroundColor || "#ffffff",
+      onclone: (clonedDoc) => applyHtml2CanvasWorkaround(clonedDoc, doc)
     });
 
     if (wasShowingBorders) doc.classList.add("show-page-borders");
@@ -191,7 +192,8 @@ async function downloadEntireDocumentAsImage() {
       scale: 2,
       useCORS: true,
       logging: false,
-      backgroundColor: window.getComputedStyle(doc).backgroundColor || "#ffffff"
+      backgroundColor: window.getComputedStyle(doc).backgroundColor || "#ffffff",
+      onclone: (clonedDoc) => applyHtml2CanvasWorkaround(clonedDoc, doc)
     });
 
     if (wasShowingBorders) doc.classList.add("show-page-borders");
@@ -283,7 +285,7 @@ async function copyPageAsImage(pageIndex, pageHeight) {
 
 function renderMarkdown() {
   const raw = els.markdownInput.value || "# Empty document";
-  const html = marked.parse(raw, { breaks: true, gfm: true });
+  const html = marked.parse(raw, { breaks: false, gfm: true });
   const cleanHtml = DOMPurify.sanitize(html);
   els.previewDocument.innerHTML = cleanHtml;
   els.metaText.textContent = `${raw.length.toLocaleString()} characters`;
