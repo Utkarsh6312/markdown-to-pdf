@@ -359,21 +359,439 @@ a {
 .preview-document {
   width: min(100%, 820px);
   margin: 0 auto;
-  padding: 52px 56px;
-  background: #ffffff;
-  color: #111111;
+  padding: var(--custom-padding, 52px 56px);
   border: 1px solid #dddddd;
   border-radius: 18px;
   box-shadow: 0 24px 60px rgba(14, 17, 20, 0.12);
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: var(--custom-font-size, 15px);
+  line-height: var(--custom-line-height, 1.7em);
+  transition: padding 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Custom typography is now handled by CSS variables --custom-font-size and --custom-line-height */
+
+/* A4 page borders option */
+.preview-document.show-page-borders {
+  background-image: linear-gradient(to bottom, 
+    transparent calc(var(--page-height) - 16px), 
+    rgba(0, 0, 0, 0.08) calc(var(--page-height) - 2px), 
+    #3b82f6 calc(var(--page-height) - 2px), 
+    #3b82f6 calc(var(--page-height))
+  );
+  background-size: 100% var(--page-height);
+}
+
+/* Themes */
+.preview-document[data-theme="paper"] {
+  background-color: #ffffff;
+  color: #111111;
+  border-color: #dddddd;
+}
+
+.preview-document[data-theme="dark"] {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
+}
+.preview-document[data-theme="dark"].show-page-borders {
+  background-image: linear-gradient(to bottom, transparent calc(var(--page-height) - 1px), #475569 calc(var(--page-height) - 1px), #475569 calc(var(--page-height) + 1px), transparent calc(var(--page-height) + 1px));
+}
+.preview-document[data-theme="dark"] h1,
+.preview-document[data-theme="dark"] h2,
+.preview-document[data-theme="dark"] h3,
+.preview-document[data-theme="dark"] h4 {
+  color: #ffffff;
+}
+.preview-document[data-theme="dark"] h2 {
+  border-bottom-color: #334155;
+}
+.preview-document[data-theme="dark"] a {
+  color: #60a5fa;
+}
+.preview-document[data-theme="dark"] blockquote {
+  background: #0f172a;
+  color: #94a3b8;
+  border-left-color: #475569;
+}
+.preview-document[data-theme="dark"] code {
+  background: #0f172a;
+  color: #f43f5e;
+}
+.preview-document[data-theme="dark"] pre {
+  background: #0b0f19;
+  color: #f8fafc;
+}
+.preview-document[data-theme="dark"] th {
+  background: #0f172a;
+}
+.preview-document[data-theme="dark"] th,
+.preview-document[data-theme="dark"] td {
+  border-color: #334155;
+}
+
+.preview-document[data-theme="sepia"] {
+  background-color: #f4ecd8;
+  color: #5b4636;
+  border-color: #dcd0b4;
+}
+.preview-document[data-theme="sepia"].show-page-borders {
+  background-image: linear-gradient(to bottom, transparent calc(var(--page-height) - 1px), #cbbba0 calc(var(--page-height) - 1px), #cbbba0 calc(var(--page-height) + 1px), transparent calc(var(--page-height) + 1px));
+}
+.preview-document[data-theme="sepia"] h1,
+.preview-document[data-theme="sepia"] h2,
+.preview-document[data-theme="sepia"] h3,
+.preview-document[data-theme="sepia"] h4 {
+  color: #433225;
+}
+.preview-document[data-theme="sepia"] h2 {
+  border-bottom-color: #dcd0b4;
+}
+.preview-document[data-theme="sepia"] a {
+  color: #b85c37;
+}
+.preview-document[data-theme="sepia"] blockquote {
+  background: #ebdcb9;
+  color: #705e52;
+  border-left-color: #cbbba0;
+}
+.preview-document[data-theme="sepia"] code {
+  background: #ebdcb9;
+  color: #a73a15;
+}
+.preview-document[data-theme="sepia"] pre {
+  background: #3e2f24;
+  color: #f4ecd8;
+}
+.preview-document[data-theme="sepia"] th {
+  background: #ebdcb9;
+}
+.preview-document[data-theme="sepia"] th,
+.preview-document[data-theme="sepia"] td {
+  border-color: #dcd0b4;
+}
+
+.preview-document[data-theme="midnight"] {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  border-color: #30363d;
+}
+.preview-document[data-theme="midnight"] h1,
+.preview-document[data-theme="midnight"] h2,
+.preview-document[data-theme="midnight"] h3,
+.preview-document[data-theme="midnight"] h4 {
+  color: #c9d1d9;
+}
+.preview-document[data-theme="midnight"] h2 {
+  border-bottom-color: #30363d;
+}
+.preview-document[data-theme="midnight"] a {
+  color: #58a6ff;
+}
+.preview-document[data-theme="midnight"] blockquote {
+  background: #161b22;
+  color: #8b949e;
+  border-left-color: #30363d;
+}
+.preview-document[data-theme="midnight"] code {
+  background: #161b22;
+  color: #ff7b72;
+}
+.preview-document[data-theme="midnight"] pre {
+  background: #010409;
+  color: #c9d1d9;
+}
+.preview-document[data-theme="midnight"] th {
+  background: #161b22;
+}
+.preview-document[data-theme="midnight"] th,
+.preview-document[data-theme="midnight"] td {
+  border-color: #30363d;
+}
+
+.preview-document[data-theme="hacker"] {
+  background-color: #000000;
+  color: #00ff00;
+  border-color: #003300;
+  font-family: "Courier New", Courier, monospace;
+}
+.preview-document[data-theme="hacker"] h1,
+.preview-document[data-theme="hacker"] h2,
+.preview-document[data-theme="hacker"] h3,
+.preview-document[data-theme="hacker"] h4 {
+  color: #00ff00;
+}
+.preview-document[data-theme="hacker"] h2 {
+  border-bottom-color: #003300;
+}
+.preview-document[data-theme="hacker"] a {
+  color: #00ffcc;
+}
+.preview-document[data-theme="hacker"] blockquote {
+  background: #001100;
+  color: #00cc00;
+  border-left-color: #00aa00;
+}
+.preview-document[data-theme="hacker"] code {
+  background: #001100;
+  color: #ff00ff;
+}
+.preview-document[data-theme="hacker"] pre {
+  background: #000000;
+  color: #00ff00;
+  border: 1px solid #003300;
+}
+.preview-document[data-theme="hacker"] th {
+  background: #001100;
+}
+.preview-document[data-theme="hacker"] th,
+.preview-document[data-theme="hacker"] td {
+  border-color: #003300;
+}
+
+.preview-document[data-theme="rose"] {
+  background-color: #fff0f5;
+  color: #5c3a41;
+  border-color: #e8d0d8;
+}
+.preview-document[data-theme="rose"] h1,
+.preview-document[data-theme="rose"] h2,
+.preview-document[data-theme="rose"] h3,
+.preview-document[data-theme="rose"] h4 {
+  color: #3b2529;
+}
+.preview-document[data-theme="rose"] h2 {
+  border-bottom-color: #e8d0d8;
+}
+.preview-document[data-theme="rose"] a {
+  color: #d1495b;
+}
+.preview-document[data-theme="rose"] blockquote {
+  background: #f8e4e9;
+  color: #7a545c;
+  border-left-color: #dcbabc;
+}
+.preview-document[data-theme="rose"] code {
+  background: #f8e4e9;
+  color: #b83b5e;
+}
+.preview-document[data-theme="rose"] pre {
+  background: #f2e1e5;
+  color: #5c3a41;
+}
+.preview-document[data-theme="rose"] th {
+  background: #f8e4e9;
+}
+.preview-document[data-theme="rose"] th,
+.preview-document[data-theme="rose"] td {
+  border-color: #e8d0d8;
+}
+
+/* Solarized Dark */
+.preview-document[data-theme="solarized-dark"] {
+  background-color: #002b36;
+  color: #839496;
+  border-color: #073642;
+}
+.preview-document[data-theme="solarized-dark"] h1,
+.preview-document[data-theme="solarized-dark"] h2,
+.preview-document[data-theme="solarized-dark"] h3,
+.preview-document[data-theme="solarized-dark"] h4 {
+  color: #93a1a1;
+}
+.preview-document[data-theme="solarized-dark"] h2 {
+  border-bottom-color: #073642;
+}
+.preview-document[data-theme="solarized-dark"] a {
+  color: #268bd2;
+}
+.preview-document[data-theme="solarized-dark"] blockquote {
+  background: #073642;
+  color: #93a1a1;
+  border-left-color: #586e75;
+}
+.preview-document[data-theme="solarized-dark"] code {
+  background: #073642;
+  color: #cb4b16;
+}
+.preview-document[data-theme="solarized-dark"] pre {
+  background: #00212b;
+  color: #839496;
+}
+.preview-document[data-theme="solarized-dark"] th {
+  background: #073642;
+}
+.preview-document[data-theme="solarized-dark"] th,
+.preview-document[data-theme="solarized-dark"] td {
+  border-color: #073642;
+}
+
+/* Solarized Light */
+.preview-document[data-theme="solarized-light"] {
+  background-color: #fdf6e3;
+  color: #657b83;
+  border-color: #eee8d5;
+}
+.preview-document[data-theme="solarized-light"] h1,
+.preview-document[data-theme="solarized-light"] h2,
+.preview-document[data-theme="solarized-light"] h3,
+.preview-document[data-theme="solarized-light"] h4 {
+  color: #586e75;
+}
+.preview-document[data-theme="solarized-light"] h2 {
+  border-bottom-color: #eee8d5;
+}
+.preview-document[data-theme="solarized-light"] a {
+  color: #268bd2;
+}
+.preview-document[data-theme="solarized-light"] blockquote {
+  background: #eee8d5;
+  color: #586e75;
+  border-left-color: #93a1a1;
+}
+.preview-document[data-theme="solarized-light"] code {
+  background: #eee8d5;
+  color: #dc322f;
+}
+.preview-document[data-theme="solarized-light"] pre {
+  background: #fdf6e3;
+  color: #657b83;
+  border: 1px solid #eee8d5;
+}
+.preview-document[data-theme="solarized-light"] th {
+  background: #eee8d5;
+}
+.preview-document[data-theme="solarized-light"] th,
+.preview-document[data-theme="solarized-light"] td {
+  border-color: #eee8d5;
+}
+
+/* Nord Theme */
+.preview-document[data-theme="nord"] {
+  background-color: #2e3440;
+  color: #d8dee9;
+  border-color: #4c566a;
+}
+.preview-document[data-theme="nord"] h1,
+.preview-document[data-theme="nord"] h2,
+.preview-document[data-theme="nord"] h3,
+.preview-document[data-theme="nord"] h4 {
+  color: #eceff4;
+}
+.preview-document[data-theme="nord"] h2 {
+  border-bottom-color: #4c566a;
+}
+.preview-document[data-theme="nord"] a {
+  color: #88c0d0;
+}
+.preview-document[data-theme="nord"] blockquote {
+  background: #3b4252;
+  color: #e5e9f0;
+  border-left-color: #81a1c1;
+}
+.preview-document[data-theme="nord"] code {
+  background: #3b4252;
+  color: #bf616a;
+}
+.preview-document[data-theme="nord"] pre {
+  background: #242933;
+  color: #d8dee9;
+}
+.preview-document[data-theme="nord"] th {
+  background: #3b4252;
+}
+.preview-document[data-theme="nord"] th,
+.preview-document[data-theme="nord"] td {
+  border-color: #4c566a;
+}
+
+/* Cyberpunk */
+.preview-document[data-theme="cyberpunk"] {
+  background-color: #0d0221;
+  color: #0ff0fc;
+  border-color: #ff003c;
+}
+.preview-document[data-theme="cyberpunk"] h1,
+.preview-document[data-theme="cyberpunk"] h2,
+.preview-document[data-theme="cyberpunk"] h3,
+.preview-document[data-theme="cyberpunk"] h4 {
+  color: #fce205;
+}
+.preview-document[data-theme="cyberpunk"] h2 {
+  border-bottom-color: #ff003c;
+}
+.preview-document[data-theme="cyberpunk"] a {
+  color: #ff007f;
+}
+.preview-document[data-theme="cyberpunk"] blockquote {
+  background: #1a053a;
+  color: #0ff0fc;
+  border-left-color: #fce205;
+}
+.preview-document[data-theme="cyberpunk"] code {
+  background: #1a053a;
+  color: #ff007f;
+}
+.preview-document[data-theme="cyberpunk"] pre {
+  background: #000000;
+  color: #0ff0fc;
+  border: 1px solid #ff003c;
+}
+.preview-document[data-theme="cyberpunk"] th {
+  background: #1a053a;
+  color: #fce205;
+}
+.preview-document[data-theme="cyberpunk"] th,
+.preview-document[data-theme="cyberpunk"] td {
+  border-color: #ff003c;
+}
+
+/* High Contrast */
+.preview-document[data-theme="high-contrast"] {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+.preview-document[data-theme="high-contrast"] h1,
+.preview-document[data-theme="high-contrast"] h2,
+.preview-document[data-theme="high-contrast"] h3,
+.preview-document[data-theme="high-contrast"] h4 {
+  color: #ffff00;
+}
+.preview-document[data-theme="high-contrast"] h2 {
+  border-bottom-color: #ffffff;
+}
+.preview-document[data-theme="high-contrast"] a {
+  color: #00ffff;
+  text-decoration: underline;
+}
+.preview-document[data-theme="high-contrast"] blockquote {
+  background: #111111;
+  color: #ffffff;
+  border-left-color: #ffffff;
+}
+.preview-document[data-theme="high-contrast"] code {
+  background: #111111;
+  color: #ff00ff;
+}
+.preview-document[data-theme="high-contrast"] pre {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+.preview-document[data-theme="high-contrast"] th {
+  background: #111111;
+  color: #ffff00;
+}
+.preview-document[data-theme="high-contrast"] th,
+.preview-document[data-theme="high-contrast"] td {
+  border-color: #ffffff;
 }
 
 .preview-document h1,
 .preview-document h2,
 .preview-document h3,
 .preview-document h4 {
-  line-height: 1.15;
+  line-height: 1.15em;
   color: #111111;
   letter-spacing: -0.03em;
 }
@@ -502,14 +920,21 @@ a {
   }
 
   .preview-document {
-    padding: 28px 22px;
+    padding: var(--custom-padding, 28px 22px);
   }
 }
 
 @media print {
+  @page {
+    margin: 0;
+  }
+
   body {
     padding: 0;
-    background: #fff;
+    margin: 0;
+    background: transparent;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .topbar,
@@ -525,76 +950,40 @@ a {
   }
 
   .preview-wrap,
-  .preview-frame,
-  .preview-document {
+  .preview-frame {
     margin: 0;
     padding: 0;
     box-shadow: none;
     border: 0;
-    background: #fff;
-  }
-
-  .preview-document,
-  .preview-document p,
-  .preview-document li,
-  .preview-document blockquote,
-  .preview-document a,
-  .preview-document h1,
-  .preview-document h2,
-  .preview-document h3,
-  .preview-document h4 {
-    color: #000;
-    background: #fff;
+    background: transparent;
   }
 
   .preview-document {
     width: 100%;
     max-width: none;
-    font-size: 12pt;
-    line-height: 1.5;
-  }
-
-  .preview-document h1 {
-    font-size: 24pt;
-  }
-
-  .preview-document h2 {
-    font-size: 18pt;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 0.2em;
-  }
-
-  .preview-document h3 {
-    font-size: 14pt;
-  }
-
-  .preview-document blockquote {
-    margin: 1em 0;
-    padding: 0.2em 0 0.2em 0.8em;
-    border-left: 3px solid #bbb;
-  }
-
-  .preview-document pre,
-  .preview-document code {
-    color: #000;
-    background: #f5f5f5;
-    border-radius: 0;
+    margin: 0;
     box-shadow: none;
+    border: 0;
+    border-radius: 0;
+    min-height: 100vh;
   }
 
-  .preview-document pre {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
+  /* Apply print margins */
+  .preview-document {
+    padding: var(--custom-print-margin, 20mm) !important;
+  }
+  
+  /* Hide the artificial page borders during print */
+  .preview-document.show-page-borders {
+    background-image: none !important;
   }
 
-  .preview-document table {
-    border-collapse: collapse;
-  }
-
-  .preview-document th,
-  .preview-document td {
-    border: 1px solid #cfcfcf;
-    background: #fff;
-    color: #000;
+  /* Optional: we ensure code blocks don't get page-broken awkwardly */
+  .preview-document pre,
+  .preview-document blockquote,
+  .preview-document table,
+  .preview-document img {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }

@@ -228,11 +228,53 @@ def normalize_latex_font_size(value: str) -> str:
     return f"{value.strip()}pt" if re.fullmatch(r"\d+(\.\d+)?", value.strip()) else value.strip()
 
 
+def sanitize_pandoc_markdown(input_path: Path) -> Path:
+    """Avoid mid-document YAML parsing by rewriting separator rules for Pandoc.
+
+    Pandoc accepts `---` as YAML metadata delimiters. In some documents that use
+    `---` as visual separators later in the file, Pandoc can misinterpret those
+    lines and attempt to parse the following content as YAML. We preserve a real
+    top-of-file metadata block if present and rewrite later standalone `---`
+    separators to `***`, which renders as the same horizontal rule in Markdown.
+    """
+    text = input_path.read_text(encoding="utf-8")
+    lines = text.splitlines(keepends=True)
+
+    first_nonempty_index: int | None = None
+    for index, line in enumerate(lines):
+        if line.strip():
+            first_nonempty_index = index
+            break
+
+    metadata_end_index: int | None = None
+    if first_nonempty_index is not None and lines[first_nonempty_index].strip() == "---":
+        for index in range(first_nonempty_index + 1, len(lines)):
+            if lines[index].strip() in {"---", "..."}:
+                metadata_end_index = index
+                break
+
+    sanitized_lines: list[str] = []
+    for index, line in enumerate(lines):
+        if line.strip() == "---" and index != first_nonempty_index and index != metadata_end_index:
+            sanitized_lines.append(line.replace("---", "***", 1))
+        else:
+            sanitized_lines.append(line)
+
+    if sanitized_lines == lines:
+        return input_path
+
+    temp_dir = Path(tempfile.mkdtemp(prefix="md2pdf-pandoc-"))
+    sanitized_path = temp_dir / input_path.name
+    sanitized_path.write_text("".join(sanitized_lines), encoding="utf-8")
+    return sanitized_path
+
+
 def render_with_pandoc(input_path: Path, output_path: Path, css_path: Path | None, args: argparse.Namespace) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    pandoc_input_path = sanitize_pandoc_markdown(input_path)
     command = [
         resolve_pandoc(),
-        str(input_path),
+        str(pandoc_input_path),
         "-o",
         str(output_path),
         "--standalone",
