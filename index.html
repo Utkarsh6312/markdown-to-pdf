@@ -14,6 +14,15 @@
       content="Convert Markdown to PDF directly in the browser. No server, no backend, no database."
     >
     <meta property="og:type" content="website">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Bangers&family=Caveat:wght@400..700&family=Chewy&family=Fredoka:wght@300..700&family=Gloria+Hallelujah&family=Kalam:wght@300;400;700&family=Pacifico&family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <!-- Highlight.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" id="hljsTheme">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
     <link rel="stylesheet" href="./site.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.7/dist/purify.min.js"></script>
@@ -30,184 +39,178 @@
         </nav>
       </header>
 
-      <section class="hero" id="top">
-        <div class="hero-copy">
-          <p class="eyebrow">Local-first Markdown to PDF</p>
-          <h1>Ship a clean PDF from raw Markdown in one tab.</h1>
-          <p class="lede">
-            Open a Markdown file, tune the page look, preview the result, and export the PDF directly in the browser.
-            Nothing leaves the device.
-          </p>
-          <div class="hero-actions">
-            <a class="primary-link" href="#studio">Open Studio</a>
-            <a class="ghost-link" href="#faq">See limits</a>
+      <section class="workspace-wrap" id="top">
+        
+        <!-- PANE 1: EDITOR -->
+        <section class="panel editor-pane">
+          <div class="panel-header">
+            <h2>Source</h2>
+            <div class="inline-actions">
+              <button id="openFileButton" class="ghost-button" type="button">Upload .md</button>
+              <button id="sampleButton" class="ghost-button" type="button">Load sample</button>
+            </div>
           </div>
-        </div>
-        <aside class="hero-note">
-          <div class="hero-card">
-            <strong>Privacy by default</strong>
-            <p>No uploads, no API, no backend, no database.</p>
-          </div>
-          <div class="hero-card">
-            <strong>Static hosting</strong>
-            <p>Deploy as plain files on GitHub Pages, Netlify, or any CDN.</p>
-          </div>
-        </aside>
-      </section>
 
-      <section class="feature-strip">
-        <article>
-          <h2>Browser only</h2>
-          <p>Everything runs client-side with JavaScript libraries loaded in the page.</p>
-        </article>
-        <article>
-          <h2>Live preview</h2>
-          <p>See headings, tables, code blocks, quotes, and layout updates before export.</p>
-        </article>
-        <article>
-          <h2>Static deploy</h2>
-          <p>No build server required. The site works as a simple static frontend.</p>
-        </article>
-      </section>
+          <!-- Drag and drop zone -->
+          <label class="upload-zone" for="fileInput" id="dropZone">
+            <input id="fileInput" type="file" accept=".md,.markdown,text/markdown">
+            <span class="upload-title">Choose or drag & drop a Markdown file</span>
+            <span class="upload-copy">or keep typing below</span>
+          </label>
 
-      <section class="workspace-wrap" id="studio">
-        <div class="section-heading">
-          <p class="eyebrow">Studio</p>
-          <h2>Convert Markdown to PDF</h2>
-        </div>
+          <label class="field">
+            <span>Filename</span>
+            <input id="filenameInput" type="text" value="document.pdf" spellcheck="false">
+          </label>
 
-        <section class="privacy-card">
-          <p>
-            This tool runs completely in your browser. No server, no backend, no database, no uploads.
-          </p>
+          <label class="field">
+            <span>Markdown</span>
+            <textarea id="markdownInput" rows="24" spellcheck="false"></textarea>
+          </label>
         </section>
 
-        <section class="workspace">
-          <section class="panel controls-panel">
-            <div class="panel-header">
-              <h2>Source</h2>
-              <div class="inline-actions">
-                <button id="openFileButton" class="ghost-button" type="button">Upload .md</button>
-                <button id="sampleButton" class="ghost-button" type="button">Load sample</button>
-              </div>
-            </div>
-
-            <label class="upload-zone" for="fileInput">
-              <input id="fileInput" type="file" accept=".md,.markdown,text/markdown">
-              <span class="upload-title">Choose Markdown file</span>
-              <span class="upload-copy">or keep typing below</span>
-            </label>
-
-            <label class="field">
-              <span>Filename</span>
-              <input id="filenameInput" type="text" value="document.pdf" spellcheck="false">
-            </label>
-
-            <label class="field">
-              <span>Markdown</span>
-              <textarea id="markdownInput" rows="14" spellcheck="false"></textarea>
-            </label>
-          </section>
-
-          <section class="panel settings-panel">
-            <div class="panel-header">
-              <h2>Settings</h2>
-              <div id="statusPill" class="status-pill">Ready</div>
-            </div>
-
-            <div class="field">
-              <span>Print Margin</span>
-              <div style="display: flex; gap: 8px;">
-                <select id="marginSelect" style="flex: 1;">
-                  <option value="normal">Normal (20mm)</option>
-                  <option value="narrow">Narrow (10mm)</option>
-                  <option value="wide">Wide (30mm)</option>
-                  <option value="custom">Custom...</option>
-                </select>
-                <input type="text" id="customMarginInput" placeholder="e.g. 25mm" style="display: none; flex: 1;">
-              </div>
-            </div>
-
-            <div class="field">
-              <span>Text Size</span>
-              <div style="display: flex; gap: 8px;">
-                <select id="fontSizeSelect" style="flex: 1;">
-                  <option value="normal">Normal (15px)</option>
-                  <option value="small">Small (13px)</option>
-                  <option value="large">Large (18px)</option>
-                  <option value="custom">Custom...</option>
-                </select>
-                <input type="text" id="customFontSizeInput" placeholder="e.g. 16px" style="display: none; flex: 1;">
-              </div>
-            </div>
-
-            <div class="field">
-              <span>Line Spacing</span>
-              <div style="display: flex; gap: 8px;">
-                <select id="lineHeightSelect" style="flex: 1;">
-                  <option value="normal">Normal (1.7)</option>
-                  <option value="compact">Compact (1.4)</option>
-                  <option value="relaxed">Relaxed (2.0)</option>
-                  <option value="custom">Custom...</option>
-                </select>
-                <input type="text" id="customLineHeightInput" placeholder="e.g. 1.5" style="display: none; flex: 1;">
-              </div>
-            </div>
-
-            <div class="field">
-              <span>Padding</span>
-              <div style="display: flex; gap: 8px;">
-                <select id="paddingSelect" style="flex: 1;">
-                  <option value="normal">Normal (52px 56px)</option>
-                  <option value="compact">Compact (24px 32px)</option>
-                  <option value="relaxed">Relaxed (80px 96px)</option>
-                  <option value="custom">Custom...</option>
-                </select>
-                <input type="text" id="customPaddingInput" placeholder="e.g. 40px" style="display: none; flex: 1;">
-              </div>
-            </div>
-
-            <div class="field">
-              <span>Preview Theme</span>
-              <select id="themeSelect">
-                <option value="paper">Paper (Light)</option>
-                <option value="dark">Slate (Dark)</option>
-                <option value="sepia">Sepia (Warm)</option>
-                <option value="midnight">Midnight (Dark)</option>
-                <option value="hacker">Hacker (Dark)</option>
-                <option value="rose">Rose (Light)</option>
-                <option value="solarized-dark">Solarized Dark</option>
-                <option value="solarized-light">Solarized Light</option>
-                <option value="nord">Nord (Dark)</option>
-                <option value="cyberpunk">Cyberpunk (Neon)</option>
-                <option value="high-contrast">High Contrast (Dark)</option>
-              </select>
-            </div>
-
-            <label class="field" style="display: flex; align-items: center; gap: 8px; margin-top: 12px; margin-bottom: 20px; cursor: pointer;">
-              <input type="checkbox" id="showBordersCheckbox" checked style="width: auto; margin: 0; cursor: pointer;">
-              <span style="margin: 0; user-select: none;">Show A4 Page Breaks</span>
-            </label>
-
-            <div class="actions">
-              <button id="downloadButton" class="primary-button" type="button">Download PDF</button>
-            </div>
-
-            <p class="helper-copy">
-              This opens the browser print dialog. Choose <strong>Save as PDF</strong> to export.
-            </p>
-          </section>
-        </section>
-
+        <!-- PANE 2: PREVIEW -->
         <section class="preview-wrap">
           <div class="preview-toolbar">
             <h2>Preview</h2>
-            <div id="copyButtonsContainer" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+            <div id="copyButtonsContainer"></div>
             <span id="metaText">0 characters</span>
           </div>
           <section id="previewFrame" class="preview-frame" data-theme="paper">
             <article id="previewDocument" class="preview-document"></article>
           </section>
+        </section>
+
+        <!-- PANE 3: SETTINGS -->
+        <section class="panel settings-pane">
+          <div class="panel-header" style="margin-bottom: 16px;">
+            <h2>Settings</h2>
+            <div id="statusPill" class="status-pill">Ready</div>
+          </div>
+
+          <div class="settings-divider"></div>
+
+          <div class="field">
+            <span>📐 Layout Template</span>
+            <select id="layoutSelect">
+              <optgroup label="General">
+                <option value="default">Default</option><option value="article">Article</option><option value="letter">Letter</option>
+              </optgroup>
+              <optgroup label="Professional">
+                <option value="resume">Resume</option><option value="academic">Academic</option><option value="report">Report</option><option value="memo">Memo</option>
+              </optgroup>
+              <optgroup label="Technical">
+                <option value="api-doc">API Doc</option><option value="readme">README</option><option value="slides">Slides</option>
+              </optgroup>
+              <optgroup label="Creative">
+                <option value="newsletter">Newsletter</option><option value="magazine">Magazine</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="field">
+            <span>Print Margin</span>
+            <div style="display: flex; gap: 8px;">
+              <select id="marginSelect" style="flex: 1;">
+                <option value="normal">Normal</option><option value="narrow">Narrow</option><option value="wide">Wide</option><option value="custom">Custom...</option>
+              </select>
+              <input type="text" id="customMarginInput" placeholder="e.g. 25mm" style="display: none; flex: 1;">
+            </div>
+          </div>
+
+          <div class="field">
+            <span>Text Size</span>
+            <div style="display: flex; gap: 8px;">
+              <select id="fontSizeSelect" style="flex: 1;">
+                <option value="normal">Normal</option><option value="small">Small</option><option value="large">Large</option><option value="custom">Custom...</option>
+              </select>
+              <input type="text" id="customFontSizeInput" placeholder="e.g. 16px" style="display: none; flex: 1;">
+            </div>
+          </div>
+
+          <div class="field">
+            <span>Line Spacing</span>
+            <div style="display: flex; gap: 8px;">
+              <select id="lineHeightSelect" style="flex: 1;">
+                <option value="normal">Normal</option><option value="compact">Compact</option><option value="relaxed">Relaxed</option><option value="custom">Custom...</option>
+              </select>
+              <input type="text" id="customLineHeightInput" placeholder="e.g. 1.5" style="display: none; flex: 1;">
+            </div>
+          </div>
+
+          <div class="field">
+            <span>Padding</span>
+            <div style="display: flex; gap: 8px;">
+              <select id="paddingSelect" style="flex: 1;">
+                <option value="normal">Normal</option><option value="compact">Compact</option><option value="relaxed">Relaxed</option><option value="custom">Custom...</option>
+              </select>
+              <input type="text" id="customPaddingInput" placeholder="e.g. 40px" style="display: none; flex: 1;">
+            </div>
+          </div>
+
+          <div class="settings-divider"></div>
+
+          <div class="field">
+            <span>Font Style</span>
+            <select id="fontStyleSelect">
+              <option value="serif">Serif</option><option value="sans">Sans</option><option value="mono">Mono</option><option value="system">System</option>
+              <option value="helvetica">Helvetica</option><option value="verdana">Verdana</option><option value="trebuchet">Trebuchet</option><option value="tahoma">Tahoma</option>
+              <option value="palatino">Palatino</option><option value="garamond">Garamond</option><option value="bookman">Bookman</option><option value="comic">Comic Sans</option>
+              <option value="pacifico">Pacifico</option><option value="caveat">Caveat</option><option value="fredoka">Fredoka</option><option value="bangers">Bangers</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <span>Preview Theme</span>
+            <select id="themeSelect">
+              <option value="paper">Paper</option><option value="dark">Slate</option><option value="sepia">Sepia</option><option value="midnight">Midnight</option>
+              <option value="hacker">Hacker</option><option value="hacker-amber">Amber</option><option value="hacker-cyan">Cyan</option><option value="dracula">Dracula</option>
+              <option value="rose">Rose</option><option value="solarized-dark">Sol Dark</option><option value="solarized-light">Sol Light</option><option value="nord">Nord</option><option value="cyberpunk">Cyberpunk</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <span>Code Theme</span>
+            <select id="codeThemeSelect">
+              <option value="github">GitHub</option><option value="github-dark">GitHub Dark</option><option value="monokai">Monokai</option><option value="vs2015">VS Dark</option><option value="dracula">Dracula</option>
+            </select>
+          </div>
+
+          <div class="settings-divider"></div>
+
+          <label class="field" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="tocCheckbox" style="width: auto; margin: 0;">
+            <span style="margin: 0; user-select: none;">📑 Auto Table of Contents</span>
+          </label>
+
+          <label class="field" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="coverPageCheckbox" style="width: auto; margin: 0;">
+            <span style="margin: 0; user-select: none;">📄 Cover Page</span>
+          </label>
+
+          <label class="field" style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 12px;">
+            <input type="checkbox" id="showBordersCheckbox" checked style="width: auto; margin: 0;">
+            <span style="margin: 0; user-select: none;">Show Page Breaks</span>
+          </label>
+
+          <div class="field">
+            <span>🖼️ Logo (optional)</span>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button id="uploadLogoBtn" class="ghost-button" type="button" style="font-size: 0.85rem;">Upload Logo</button>
+              <button id="clearLogoBtn" class="ghost-button" type="button" style="font-size: 0.85rem; display: none;">Clear</button>
+              <input id="logoInput" type="file" accept="image/*" style="display: none;">
+              <img id="logoPreview" style="display: none; height: 28px; border-radius: 4px;" alt="Logo preview">
+            </div>
+          </div>
+
+          <div class="field">
+            <span>🔒 Watermark</span>
+            <input type="text" id="watermarkInput" placeholder="e.g. DRAFT" spellcheck="false">
+          </div>
+
+          <div class="actions" style="margin-top: 24px;">
+            <button id="downloadButton" class="primary-button" type="button" style="width: 100%;">Download PDF</button>
+          </div>
         </section>
       </section>
 
@@ -251,4 +254,5 @@
 
     <script src="./app.js"></script>
   </body>
+
 </html>
