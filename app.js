@@ -71,6 +71,19 @@ function formatCSSValue(val, defaultUnit) {
   return val;
 }
 
+function applyHtml2CanvasWorkaround(clonedDoc, originalDoc) {
+  const clonedPreview = clonedDoc.getElementById("previewDocument");
+  if (!clonedPreview) return;
+  clonedPreview.style.lineHeight = window.getComputedStyle(originalDoc).lineHeight;
+  const originalElements = originalDoc.querySelectorAll('*');
+  const clonedElements = clonedPreview.querySelectorAll('*');
+  for (let i = 0; i < originalElements.length; i++) {
+    if (clonedElements[i]) {
+      clonedElements[i].style.lineHeight = window.getComputedStyle(originalElements[i]).lineHeight;
+    }
+  }
+}
+
 function updateCopyButtons() {
   const container = els.copyButtonsContainer;
   if (!container) return;
@@ -222,7 +235,8 @@ async function copyPageAsImage(pageIndex, pageHeight) {
       scale: 2, // High DPI render
       useCORS: true,
       logging: false,
-      backgroundColor: "#ffffff"
+      backgroundColor: "#ffffff",
+      onclone: (clonedDoc) => applyHtml2CanvasWorkaround(clonedDoc, doc)
     });
 
     if (wasShowingBorders) doc.classList.add("show-page-borders");
