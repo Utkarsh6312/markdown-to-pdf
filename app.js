@@ -306,7 +306,6 @@ function generateCoverPage(markdownText) {
 
 // ── Watermark (Feature #2) ─────────────────────────────────────────
 function applyWatermark(doc) {
-  // Remove existing watermark
   const existing = doc.querySelector(".watermark-overlay");
   if (existing) existing.remove();
 
@@ -317,12 +316,17 @@ function applyWatermark(doc) {
   overlay.className = "watermark-overlay";
   overlay.setAttribute("aria-hidden", "true");
 
-  // Create a grid of watermark text
-  for (let i = 0; i < 6; i++) {
-    const span = document.createElement("span");
-    span.textContent = text;
-    overlay.appendChild(span);
-  }
+  // Generate a repeating SVG background
+  const escapedText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+    <text x="50%" y="50%" transform="rotate(-35 200 200)" text-anchor="middle" font-family="sans-serif" font-size="52" font-weight="900" fill="gray" opacity="0.15" letter-spacing="0.15em" text-transform="uppercase">${escapedText}</text>
+  </svg>`;
+  const encoded = btoa(unescape(encodeURIComponent(svg)));
+  
+  overlay.style.backgroundImage = `url("data:image/svg+xml;base64,${encoded}")`;
+  overlay.style.backgroundRepeat = "repeat";
+  overlay.style.backgroundPosition = "center top";
+
   doc.appendChild(overlay);
 }
 
@@ -330,8 +334,8 @@ function applyWatermark(doc) {
 function applyLayout(doc) {
   // Remove all existing layout classes
   const layouts = [
-    "layout-default", "layout-article", "layout-letter",
-    "layout-resume", "layout-academic", "layout-report",
+    "layout-default", "layout-split-page", "layout-article", "layout-letter",
+    "layout-resume", "layout-resume-modern", "layout-resume-minimal", "layout-resume-tech", "layout-resume-dev", "layout-academic", "layout-report",
     "layout-memo", "layout-api-doc", "layout-readme",
     "layout-slides", "layout-newsletter", "layout-magazine"
   ];
@@ -535,6 +539,22 @@ function renderMarkdown() {
       }
     }
 
+    // 4.5 Enhance Resume Skills (Auto-column layout for skills)
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = cleanHtml;
+    const headings = tempDiv.querySelectorAll("h1, h2, h3, h4");
+    headings.forEach(h => {
+      if (h.textContent.toLowerCase().includes("skill")) {
+        let sibling = h.nextElementSibling;
+        while (sibling && !["H1", "H2", "H3", "H4"].includes(sibling.tagName)) {
+          if (sibling.tagName === "UL") sibling.classList.add("skills-list");
+          sibling.querySelectorAll("ul").forEach(ul => ul.classList.add("skills-list"));
+          sibling = sibling.nextElementSibling;
+        }
+      }
+    });
+    cleanHtml = tempDiv.innerHTML;
+
     finalHtml += cleanHtml;
     els.previewDocument.innerHTML = finalHtml;
 
@@ -633,7 +653,16 @@ function applySettings() {
     const rawMargin = els.marginSelect.value === "custom" ? els.customMarginInput.value :
       (els.marginSelect.value === "narrow" ? "10mm" :
        els.marginSelect.value === "wide" ? "30mm" : "20mm");
-    doc.style.setProperty("--custom-print-margin", formatCSSValue(rawMargin, "mm") || "20mm");
+    const formattedMargin = formatCSSValue(rawMargin, "mm") || "20mm";
+    doc.style.setProperty("--custom-print-margin", formattedMargin);
+
+    let pageStyle = document.getElementById("dynamic-page-style");
+    if (!pageStyle) {
+      pageStyle = document.createElement("style");
+      pageStyle.id = "dynamic-page-style";
+      document.head.appendChild(pageStyle);
+    }
+    pageStyle.textContent = `@media print { @page { margin: ${formattedMargin} !important; } }`;
   }
 
   // Padding
