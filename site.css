@@ -2189,14 +2189,19 @@ textarea {
 
 @media print {
 
+  @page {
+    margin: 0;
+  }
+
   body {
     padding: 0;
     margin: 0;
-    background: transparent;
+    background: white !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
+  /* Hide everything except the preview document */
   .topbar,
   .hero,
   .feature-strip,
@@ -2207,12 +2212,17 @@ textarea {
   .settings-pane,
   .info-grid,
   .faq,
-  .preview-toolbar {
+  .preview-toolbar,
+  .info-section,
+  footer {
     display: none !important;
   }
 
   .workspace-wrap {
     display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
   }
 
   .app-shell {
@@ -2221,6 +2231,7 @@ textarea {
     height: auto !important;
     min-height: 0 !important;
     display: block !important;
+    background: transparent !important;
   }
 
   .preview-wrap,
@@ -2233,39 +2244,98 @@ textarea {
     overflow: visible !important;
     height: auto !important;
     position: static !important;
+    border-radius: 0 !important;
   }
 
   .preview-document {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
+    padding: var(--custom-print-margin, 20mm) !important;
     box-shadow: none !important;
     border: 0 !important;
     border-radius: 0 !important;
     min-height: auto !important;
     height: auto !important;
     overflow: visible !important;
+    background: white !important;
+    background-image: none !important;
+    /* Force real text rendering for selectable PDF text */
+    -webkit-text-stroke: 0 !important;
+    text-shadow: none !important;
+    -webkit-font-smoothing: subpixel-antialiased !important;
+    text-rendering: optimizeLegibility !important;
   }
 
-  /* Apply print margins */
-  .preview-document {
+  /* Strip all theme backgrounds during print so text stays real */
+  .preview-document[data-theme] {
+    background: white !important;
+    background-image: none !important;
+    color: black !important;
   }
-  
+
+  /* Keep dark theme headings/links readable in print */
+  .preview-document[data-theme] h1,
+  .preview-document[data-theme] h2,
+  .preview-document[data-theme] h3,
+  .preview-document[data-theme] h4,
+  .preview-document[data-theme] h5,
+  .preview-document[data-theme] h6 {
+    color: black !important;
+  }
+
+  .preview-document[data-theme] a {
+    color: #0000EE !important;
+  }
+
+  .preview-document[data-theme] code {
+    background: #f5f5f5 !important;
+    color: #333 !important;
+  }
+
+  .preview-document[data-theme] pre {
+    background: #f5f5f5 !important;
+    color: #333 !important;
+  }
+
+  .preview-document[data-theme] blockquote {
+    border-color: #ccc !important;
+    color: #333 !important;
+    background: transparent !important;
+  }
+
+  .preview-document[data-theme] th,
+  .preview-document[data-theme] td {
+    border-color: #ccc !important;
+    color: black !important;
+    background: transparent !important;
+  }
+
   /* Hide the artificial page borders during print */
   .preview-document.show-page-borders {
     background-image: none !important;
   }
 
-  /* Ensure code blocks wrap text instead of showing scrollbars in PDF */
+  /* Ensure code blocks wrap text instead of showing scrollbars */
   .preview-document pre {
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
     overflow-x: visible !important;
   }
 
-  /* Optional: we ensure elements don't get page-broken awkwardly */
+  /* Prevent awkward page breaks */
+  .preview-document h1,
+  .preview-document h2,
+  .preview-document h3,
+  .preview-document h4 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
   .preview-document table,
-  .preview-document img {
+  .preview-document img,
+  .preview-document pre,
+  .preview-document blockquote {
     page-break-inside: avoid;
     break-inside: avoid;
     max-width: 100% !important;
@@ -2284,19 +2354,16 @@ textarea {
     break-after: page;
   }
 
-  /* Watermark prints correctly but doesn't block text selection */
+  /* Watermark: move behind text so it doesn't block selection */
   .watermark-overlay {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     z-index: -1 !important;
+    pointer-events: none !important;
   }
 
-  /* Ensure text remains selectable in PDF */
-  .preview-document {
-    -webkit-user-select: text !important;
-    user-select: text !important;
-  }
-
+  /* Force text to be selectable */
+  .preview-document,
   .preview-document * {
     -webkit-user-select: text !important;
     user-select: text !important;
@@ -2309,3 +2376,4 @@ textarea {
     column-gap: 24px;
   }
 }
+
