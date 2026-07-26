@@ -1367,8 +1367,8 @@ textarea {
   max-width: 780px !important;
   padding: 28px 40px !important;
   font-family: "Times New Roman", Times, Georgia, serif !important;
-  font-size: 11pt !important;
-  line-height: 1.35 !important;
+  font-size: var(--custom-font-size, 11pt) !important;
+  line-height: var(--custom-line-height, 1.35) !important;
   color: #000 !important;
   background: #fff !important;
 }
@@ -2232,6 +2232,18 @@ textarea {
     min-height: 0 !important;
     display: block !important;
     background: transparent !important;
+  }
+
+  /* CRITICAL: Remove ALL compositing properties that cause Chrome
+     to rasterize text into flat images, destroying selectability */
+  *, *::before, *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+    transform: none !important;
+    mix-blend-mode: normal !important;
+    isolation: auto !important;
+    will-change: auto !important;
   }
 
   .preview-wrap,
