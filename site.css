@@ -497,9 +497,9 @@ textarea {
 
 /* Themes */
 .preview-document[data-theme="paper"] {
-  background-color: #ffffff;
-  color: #111111;
-  border-color: #dddddd;
+  background: white;
+  color: #1a1a1a;
+  border-color: #ddd;
 }
 
 .preview-document[data-theme="dark"] {
@@ -2284,10 +2284,22 @@ textarea {
     break-after: page;
   }
 
-  /* Watermark prints correctly */
+  /* Watermark prints correctly but doesn't block text selection */
   .watermark-overlay {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    z-index: -1 !important;
+  }
+
+  /* Ensure text remains selectable in PDF */
+  .preview-document {
+    -webkit-user-select: text !important;
+    user-select: text !important;
+  }
+
+  .preview-document * {
+    -webkit-user-select: text !important;
+    user-select: text !important;
   }
 
   /* Magazine columns print properly */
