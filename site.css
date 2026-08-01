@@ -2051,26 +2051,50 @@ textarea {
 
 @media (max-width: 920px) {
   .app-shell {
-    padding: 12px;
+    padding: 8px 12px;
   }
 
-  .topbar,
-  .hero,
-  .workspace,
-  .feature-strip,
-  .info-grid,
-  .grid.two-up {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
+  /* ── Topbar ── */
   .topbar {
-    padding: 12px 16px;
-    border-radius: 16px;
-    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  .topbar,
+  .brand {
+    font-size: 1.1rem;
+  }
+
+  .topnav {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .topnav a {
+    font-size: 0.82rem;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 20px 12px;
+    margin-top: 12px;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+    line-height: 1.05;
+  }
+
+  .hero-note {
+    grid-template-columns: 1fr;
+  }
+
   .hero-actions,
   .actions,
   .inline-actions {
@@ -2078,108 +2102,182 @@ textarea {
     align-items: stretch;
   }
 
-  .topnav {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .hero {
-    padding: 24px 16px;
-    margin-top: 16px;
-  }
-
-  .hero h1 {
-    font-size: 2rem;
-  }
-
-  .hero-note {
-    grid-template-columns: 1fr;
-  }
-
+  /* ── Workspace (3-column → stacked) ── */
   .workspace-wrap {
-    margin-top: 24px;
+    margin-top: 16px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
   }
 
+  /* ── Panels ── */
   .panel {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .panel-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .panel-header h2 {
+    font-size: 1rem;
+  }
+
+  /* ── Editor Pane ── */
+  .editor-pane textarea {
+    min-height: 200px !important;
+    font-size: 14px;
+  }
+
+  .upload-zone {
     padding: 16px;
   }
 
+  .upload-title {
+    font-size: 0.9rem;
+  }
+
+  .upload-copy {
+    font-size: 0.8rem;
+  }
+
+  /* ── Settings Pane ── */
+  .settings-pane {
+    order: -1; /* Move settings above editor on mobile for quick access */
+  }
+
+  .settings-pane .field {
+    margin-bottom: 8px;
+  }
+
+  .settings-pane .field > span {
+    font-size: 0.85rem;
+  }
+
+  .settings-divider {
+    margin: 8px 0;
+  }
+
+  /* ── Preview ── */
   .preview-wrap {
-    padding: 12px;
-    margin-top: 12px;
+    padding: 10px;
+    margin-top: 0;
+    border-radius: 14px;
+    overflow-x: auto;
+  }
+
+  .preview-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+  }
+
+  .preview-toolbar h2 {
+    font-size: 1rem;
+  }
+
+  #metaText {
+    font-size: 0.75rem;
   }
 
   .preview-frame {
-    padding: 8px;
-    border-radius: 16px;
+    padding: 0;
+    border-radius: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .preview-document {
-    padding: var(--custom-padding, 24px 16px) !important;
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: 100% !important;
+    padding: var(--custom-padding, 20px 14px) !important;
+    font-size: 13px !important;
+    min-height: auto !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
-  /* Prevent auto-zoom on iOS by forcing 16px font-size for inputs */
+  #copyButtonsContainer {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+
+  #copyButtonsContainer button {
+    padding: 3px 8px !important;
+    font-size: 0.7rem !important;
+    flex: none !important;
+  }
+
+  /* ── Prevent auto-zoom on iOS ── */
   input[type="text"],
   select,
   textarea {
     font-size: 16px !important;
   }
 
-/* New Top Settings Bar */
-.top-settings-bar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: var(--surface);
-  padding: 8px 16px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
-  overflow-x: auto;
-  white-space: nowrap;
-}
+  /* ── Info Grid / FAQ ── */
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 8px;
+  }
 
-.top-settings-bar .settings-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+  .info-card {
+    padding: 20px;
+  }
 
-.top-settings-bar label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  cursor: pointer;
-}
+  .faq {
+    padding: 0 8px;
+  }
 
-.top-settings-bar select, 
-.top-settings-bar input[type="text"] {
-  padding: 2px 6px;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  height: 26px;
-}
+  .section-heading {
+    text-align: center;
+  }
 
-.settings-divider-vertical {
-  width: 1px;
-  height: 24px;
-  background: var(--border);
-}
+  .section-heading h2 {
+    font-size: 1.5rem;
+  }
 
-/* Adjust workspace gap */
-.workspace-wrap {
-  margin-top: 0;
-  display: grid;
-  grid-template-columns: minmax(320px, 1.2fr) minmax(400px, 1.5fr) 280px;
-  gap: 16px;
-  align-items: start;
-}
+  .faq-list {
+    gap: 8px;
+  }
+
+  .faq-list summary {
+    font-size: 0.9rem;
+    padding: 12px 14px;
+  }
+
+  .faq-list p {
+    font-size: 0.85rem;
+    padding: 8px 14px;
+  }
+
+  /* ── Feature Strip ── */
+  .feature-strip {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* ── Ghost & Primary Buttons ── */
+  .ghost-button {
+    font-size: 0.82rem;
+    padding: 6px 12px;
+  }
+
+  .primary-button {
+    font-size: 0.95rem;
+    padding: 12px 16px;
+  }
+
+  /* ── Status Pill ── */
+  .status-pill {
+    font-size: 0.72rem;
+  }
 }
 
 @page landscape-page {
@@ -2193,12 +2291,12 @@ textarea {
     margin: 0;
   }
 
-  body {
-    padding: 0;
-    margin: 0;
+  html, body {
+    padding: 0 !important;
+    margin: 0 !important;
     background: white !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    overflow: visible !important;
+    height: auto !important;
   }
 
   /* Hide everything except the preview document */
@@ -2223,6 +2321,8 @@ textarea {
     padding: 0 !important;
     margin: 0 !important;
     gap: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
   }
 
   .app-shell {
@@ -2232,6 +2332,7 @@ textarea {
     min-height: 0 !important;
     display: block !important;
     background: transparent !important;
+    overflow: visible !important;
   }
 
   /* CRITICAL: Remove ALL compositing properties that cause Chrome
@@ -2244,6 +2345,7 @@ textarea {
     mix-blend-mode: normal !important;
     isolation: auto !important;
     will-change: auto !important;
+    opacity: 1 !important;
   }
 
   .preview-wrap,

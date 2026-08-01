@@ -709,10 +709,13 @@ function applySettings() {
 
   // Font size
   if (els.fontSizeSelect) {
+    const isResume = doc.className.includes("layout-resume");
     const rawFontSize = els.fontSizeSelect.value === "custom" ? els.customFontSizeInput.value :
-      (els.fontSizeSelect.value === "small" ? "13px" :
-       els.fontSizeSelect.value === "large" ? "18px" : "15px");
-    doc.style.setProperty("--custom-font-size", formatCSSValue(rawFontSize, "px") || "15px");
+      (els.fontSizeSelect.value === "small" ? (isResume ? "9.5pt" : "13px") :
+       els.fontSizeSelect.value === "large" ? (isResume ? "12.5pt" : "18px") :
+       (isResume ? "11pt" : "15px"));
+    const defaultUnit = isResume ? "pt" : "px";
+    doc.style.setProperty("--custom-font-size", formatCSSValue(rawFontSize, defaultUnit) || (isResume ? "11pt" : "15px"));
   }
 
   // Line height
