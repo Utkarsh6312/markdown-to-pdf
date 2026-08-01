@@ -2154,6 +2154,12 @@ textarea {
   padding-left: 36px !important;
 }
 
+.markdown-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .textarea-container {
   position: relative;
   border: 1px solid var(--line);
