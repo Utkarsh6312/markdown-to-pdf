@@ -87,7 +87,81 @@ const els = {
   logoPreview: document.querySelector("#logoPreview"),
   watermarkInput: document.querySelector("#watermarkInput"),
   dropZone: document.querySelector("#dropZone"),
+  
+  // Mobile UI Redesign Elements
+  hamburgerMenuBtn: document.querySelector("#hamburgerMenuBtn"),
+  mobileSettingsOverlay: document.querySelector("#mobileSettingsOverlay"),
+  settingsPane: document.querySelector("#settingsPane"),
+  viewMoreBtn: document.querySelector(".view-more-btn"),
+  textareaContainer: document.querySelector(".textarea-container"),
+  
+  // Setting Value Labels
+  layoutValue: document.querySelector("#layoutValue"),
+  marginValue: document.querySelector("#marginValue"),
+  fontSizeValue: document.querySelector("#fontSizeValue"),
+  lineHeightValue: document.querySelector("#lineHeightValue"),
+  paddingValue: document.querySelector("#paddingValue"),
+  fontStyleValue: document.querySelector("#fontStyleValue"),
+  themeValue: document.querySelector("#themeValue"),
+  codeThemeValue: document.querySelector("#codeThemeValue"),
 };
+
+// ── Settings Value Sync (Mobile Redesign) ───────────────────────────
+function syncSettingValue(selectEl, labelEl) {
+  if (!selectEl || !labelEl) return;
+  const selectedOption = selectEl.options[selectEl.selectedIndex];
+  if (selectedOption) {
+    labelEl.textContent = selectedOption.text;
+  }
+}
+
+function initSettingSync() {
+  const syncMap = [
+    { select: els.layoutSelect, label: els.layoutValue },
+    { select: els.marginSelect, label: els.marginValue },
+    { select: els.fontSizeSelect, label: els.fontSizeValue },
+    { select: els.lineHeightSelect, label: els.lineHeightValue },
+    { select: els.paddingSelect, label: els.paddingValue },
+    { select: els.fontStyleSelect, label: els.fontStyleValue },
+    { select: els.themeSelect, label: els.themeValue },
+    { select: els.codeThemeSelect, label: els.codeThemeValue },
+  ];
+
+  syncMap.forEach(({ select, label }) => {
+    if (select && label) {
+      // Sync on change
+      select.addEventListener("change", () => syncSettingValue(select, label));
+      // Sync initial
+      syncSettingValue(select, label);
+    }
+  });
+}
+
+// ── Mobile Drawer Logic ───────────────────────────────────────────────
+function initMobileDrawer() {
+  if (els.hamburgerMenuBtn && els.mobileSettingsOverlay && els.settingsPane) {
+    els.hamburgerMenuBtn.addEventListener("click", () => {
+      els.settingsPane.classList.add("open");
+      els.mobileSettingsOverlay.classList.add("active");
+    });
+
+    els.mobileSettingsOverlay.addEventListener("click", () => {
+      els.settingsPane.classList.remove("open");
+      els.mobileSettingsOverlay.classList.remove("active");
+    });
+  }
+}
+
+// ── Textarea View More Logic ──────────────────────────────────────────
+function initTextareaViewMore() {
+  if (els.viewMoreBtn && els.textareaContainer) {
+    els.viewMoreBtn.addEventListener("click", () => {
+      els.textareaContainer.classList.add("expanded");
+      // Optionally focus the textarea when expanded
+      els.markdownInput.focus();
+    });
+  }
+}
 
 const defaultDocumentTitle = document.title;
 let currentLogoDataUrl = null;
@@ -365,33 +439,35 @@ function updateCopyButtons() {
 
   const copyAllBtn = document.createElement("button");
   copyAllBtn.type = "button";
-  copyAllBtn.className = "ghost-button";
-  copyAllBtn.style.padding = "6px 12px";
-  copyAllBtn.style.fontSize = "0.85rem";
-  copyAllBtn.style.fontWeight = "bold";
-  copyAllBtn.textContent = `Copy Entire Document`;
+  copyAllBtn.className = "ghost-button pill-button";
+  copyAllBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy All`;
   copyAllBtn.addEventListener("click", () => copyEntireDocumentAsImage());
   container.appendChild(copyAllBtn);
 
   const downloadAllBtn = document.createElement("button");
   downloadAllBtn.type = "button";
-  downloadAllBtn.className = "primary-button";
-  downloadAllBtn.style.padding = "6px 12px";
-  downloadAllBtn.style.fontSize = "0.85rem";
-  downloadAllBtn.style.fontWeight = "bold";
-  downloadAllBtn.textContent = `Download Entire Document`;
+  downloadAllBtn.className = "primary-button pill-button";
+  downloadAllBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download PDF`;
   downloadAllBtn.addEventListener("click", () => downloadEntireDocumentAsImage());
   container.appendChild(downloadAllBtn);
 
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "ghost-button";
-    btn.style.padding = "6px 12px";
-    btn.style.fontSize = "0.85rem";
-    btn.textContent = `Copy Page ${i}`;
-    btn.addEventListener("click", () => copyPageAsImage(i, pageHeight));
-    container.appendChild(btn);
+  const paginationPills = document.querySelector(".pagination-pills");
+  if (paginationPills) {
+    paginationPills.innerHTML = "";
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "page-pill";
+      if (i === 1) btn.classList.add("active");
+      btn.textContent = `Page ${i}`;
+      btn.addEventListener("click", (e) => {
+        // Just visual toggle for now, actual copy behavior might need confirmation
+        document.querySelectorAll(".page-pill").forEach(p => p.classList.remove("active"));
+        e.target.classList.add("active");
+        copyPageAsImage(i, pageHeight);
+      });
+      paginationPills.appendChild(btn);
+    }
   }
 }
 
@@ -753,6 +829,60 @@ function applySettings() {
   scheduleAutoSave();
 }
 
+// ── Settings Value Sync (Mobile Redesign) ───────────────────────────
+function syncSettingValue(selectEl, labelEl) {
+  if (!selectEl || !labelEl) return;
+  const selectedOption = selectEl.options[selectEl.selectedIndex];
+  if (selectedOption) {
+    labelEl.textContent = selectedOption.text;
+  }
+}
+
+function initSettingSync() {
+  const syncMap = [
+    { select: els.layoutSelect, label: els.layoutValue },
+    { select: els.marginSelect, label: els.marginValue },
+    { select: els.fontSizeSelect, label: els.fontSizeValue },
+    { select: els.lineHeightSelect, label: els.lineHeightValue },
+    { select: els.paddingSelect, label: els.paddingValue },
+    { select: els.fontStyleSelect, label: els.fontStyleValue },
+    { select: els.themeSelect, label: els.themeValue },
+    { select: els.codeThemeSelect, label: els.codeThemeValue },
+  ];
+
+  syncMap.forEach(({ select, label }) => {
+    if (select && label) {
+      select.addEventListener("change", () => syncSettingValue(select, label));
+      syncSettingValue(select, label);
+    }
+  });
+}
+
+// ── Mobile Drawer Logic ───────────────────────────────────────────────
+function initMobileDrawer() {
+  if (els.hamburgerMenuBtn && els.mobileSettingsOverlay && els.settingsPane) {
+    els.hamburgerMenuBtn.addEventListener("click", () => {
+      els.settingsPane.classList.add("open");
+      els.mobileSettingsOverlay.classList.add("active");
+    });
+
+    els.mobileSettingsOverlay.addEventListener("click", () => {
+      els.settingsPane.classList.remove("open");
+      els.mobileSettingsOverlay.classList.remove("active");
+    });
+  }
+}
+
+// ── Textarea View More Logic ──────────────────────────────────────────
+function initTextareaViewMore() {
+  if (els.viewMoreBtn && els.textareaContainer) {
+    els.viewMoreBtn.addEventListener("click", () => {
+      els.textareaContainer.classList.add("expanded");
+      els.markdownInput.focus();
+    });
+  }
+}
+
 // ── Boot ────────────────────────────────────────────────────────────
 function boot() {
   // Try to restore auto-saved session
@@ -766,6 +896,11 @@ function boot() {
 
   // Setup logo upload
   setupLogo();
+
+  // Initialize new UI components
+  initSettingSync();
+  initMobileDrawer();
+  initTextareaViewMore();
 
   // Bind all settings controls
   const settingsControls = [

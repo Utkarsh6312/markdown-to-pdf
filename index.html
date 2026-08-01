@@ -31,8 +31,14 @@
   <body>
     <main class="app-shell">
       <header class="topbar">
-        <a class="brand" href="#top">md2pdf Studio</a>
-        <nav class="topnav">
+        <a class="brand" href="#top">
+          <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><path d="M9 16V8l-3 3"></path><path d="M15 8v8l3-3"></path></svg>
+          md2pdf Studio
+        </a>
+        <button id="hamburgerMenuBtn" class="hamburger-btn" aria-label="Toggle settings menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <nav class="topnav desktop-only">
           <a href="#studio">Studio</a>
           <a href="#how">How it works</a>
           <a href="#faq">FAQ</a>
@@ -44,172 +50,277 @@
         <!-- PANE 1: EDITOR -->
         <section class="panel editor-pane">
           <div class="panel-header">
-            <h2>Source</h2>
-            <div class="inline-actions">
-              <button id="openFileButton" class="ghost-button" type="button">Upload .md</button>
-              <button id="sampleButton" class="ghost-button" type="button">Load sample</button>
-            </div>
+            <h2 class="flex-align">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heading-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              Source
+            </h2>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          </div>
+          
+          <div class="inline-actions centered-actions">
+            <button id="openFileButton" class="ghost-button pill-button" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              Upload .md
+            </button>
+            <button id="sampleButton" class="ghost-button pill-button" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              Load sample
+            </button>
           </div>
 
           <!-- Drag and drop zone -->
           <label class="upload-zone" for="fileInput" id="dropZone">
             <input id="fileInput" type="file" accept=".md,.markdown,text/markdown">
-            <span class="upload-title">Choose or drag & drop a Markdown file</span>
-            <span class="upload-copy">or keep typing below</span>
+            <div class="upload-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+            <div class="upload-text">
+              <span class="upload-title">Choose or drag & drop a Markdown file</span>
+              <span class="upload-copy">or keep typing below</span>
+            </div>
           </label>
 
           <label class="field">
-            <span>Filename</span>
-            <input id="filenameInput" type="text" value="document.pdf" spellcheck="false">
+            <span class="field-label-small">Filename</span>
+            <input id="filenameInput" type="text" value="document.pdf" spellcheck="false" class="with-icon-bg">
           </label>
 
-          <label class="field">
-            <span>Markdown</span>
-            <textarea id="markdownInput" rows="24" spellcheck="false"></textarea>
-          </label>
+          <div class="field markdown-field">
+            <span class="field-label-small">Markdown</span>
+            <div class="textarea-container">
+              <textarea id="markdownInput" rows="12" spellcheck="false"></textarea>
+              <div class="textarea-fade"></div>
+              <button class="view-more-btn" type="button">
+                View more
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </div>
+          </div>
         </section>
 
         <!-- PANE 2: PREVIEW -->
-        <section class="preview-wrap">
-          <div class="preview-toolbar">
-            <h2>Preview</h2>
-            <div id="copyButtonsContainer"></div>
-            <span id="metaText">0 characters</span>
+        <section class="preview-wrap panel">
+          <div class="panel-header preview-toolbar">
+            <h2 class="flex-align">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heading-icon text-accent"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              Preview
+            </h2>
+            <span id="metaText" class="meta-text">0 characters</span>
           </div>
+
+          <div id="copyButtonsContainer" class="preview-actions">
+            <!-- Buttons injected by JS, but let's structure them if they were static, 
+                 actually we need to update app.js to generate these buttons with new styles -->
+          </div>
+          
+          <div class="pagination-pills">
+            <button class="page-pill active">Page 1</button>
+            <button class="page-pill">Page 2</button>
+            <button class="page-pill">Page 3</button>
+            <button class="page-pill">Page 4</button>
+            <button class="page-pill">Page 5</button>
+          </div>
+
           <section id="previewFrame" class="preview-frame" data-theme="paper">
             <article id="previewDocument" class="preview-document"></article>
           </section>
         </section>
 
         <!-- PANE 3: SETTINGS -->
-        <section class="panel settings-pane">
-          <div class="panel-header" style="margin-bottom: 16px;">
-            <h2>Settings</h2>
-            <div id="statusPill" class="status-pill">Ready</div>
+        <!-- On mobile, this will become an off-canvas drawer triggered by hamburger -->
+        <div id="mobileSettingsOverlay" class="mobile-settings-overlay"></div>
+        <section id="settingsPane" class="panel settings-pane mobile-drawer">
+          <div class="panel-header drawer-header">
+            <h2 class="flex-align">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heading-icon text-accent"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              Settings
+            </h2>
+            <div class="flex-align">
+              <div id="statusPill" class="status-pill text-green">Ready</div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            </div>
           </div>
 
-          <div class="settings-divider"></div>
+          <div class="settings-list">
+            <!-- Layout Template -->
+            <div class="setting-card">
+              <div class="setting-icon bg-purple">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              </div>
+              <div class="setting-info">
+                <span class="setting-title">Layout Template</span>
+                <span class="setting-value" id="layoutValue">Default</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="setting-chevron"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <select id="layoutSelect" class="invisible-select">
+                <optgroup label="General">
+                  <option value="default">Default</option><option value="split-page">Split Page</option><option value="article">Article</option><option value="letter">Letter</option>
+                </optgroup>
+                <optgroup label="Professional">
+                  <option value="resume">Resume (Classic)</option><option value="resume-modern">Resume (Modern)</option><option value="resume-minimal">Resume (Minimal)</option><option value="resume-tech">Resume (Tech)</option><option value="resume-dev">Resume (Dev/Compact)</option><option value="academic">Academic</option><option value="report">Report</option><option value="memo">Memo</option>
+                </optgroup>
+                <optgroup label="Technical">
+                  <option value="api-doc">API Doc</option><option value="readme">README</option><option value="slides">Slides</option>
+                </optgroup>
+                <optgroup label="Creative">
+                  <option value="newsletter">Newsletter</option><option value="magazine">Magazine</option>
+                </optgroup>
+              </select>
+            </div>
 
-          <div class="field">
-            <span>📐 Layout Template</span>
-            <select id="layoutSelect">
-              <optgroup label="General">
-                <option value="default">Default</option><option value="split-page">Split Page</option><option value="article">Article</option><option value="letter">Letter</option>
-              </optgroup>
-              <optgroup label="Professional">
-                <option value="resume">Resume (Classic)</option><option value="resume-modern">Resume (Modern)</option><option value="resume-minimal">Resume (Minimal)</option><option value="resume-tech">Resume (Tech)</option><option value="resume-dev">Resume (Dev/Compact)</option><option value="academic">Academic</option><option value="report">Report</option><option value="memo">Memo</option>
-              </optgroup>
-              <optgroup label="Technical">
-                <option value="api-doc">API Doc</option><option value="readme">README</option><option value="slides">Slides</option>
-              </optgroup>
-              <optgroup label="Creative">
-                <option value="newsletter">Newsletter</option><option value="magazine">Magazine</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <div class="field">
-            <span>Print Margin</span>
-            <div style="display: flex; gap: 8px;">
-              <select id="marginSelect" style="flex: 1;">
+            <!-- Print Margin -->
+            <div class="setting-card">
+              <div class="setting-icon bg-blue">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M8 3v18"></path><path d="M16 3v18"></path></svg>
+              </div>
+              <div class="setting-info">
+                <span class="setting-title">Print Margin</span>
+                <span class="setting-value" id="marginValue">Normal</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="setting-chevron"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <select id="marginSelect" class="invisible-select">
                 <option value="normal">Normal</option><option value="narrow">Narrow</option><option value="wide">Wide</option><option value="custom">Custom...</option>
               </select>
-              <input type="text" id="customMarginInput" placeholder="e.g. 25mm" style="display: none; flex: 1;">
             </div>
-          </div>
+            <input type="text" id="customMarginInput" placeholder="e.g. 25mm" class="custom-setting-input" style="display: none;">
 
-          <div class="field">
-            <span>Text Size</span>
-            <div style="display: flex; gap: 8px;">
-              <select id="fontSizeSelect" style="flex: 1;">
+            <!-- Text Size -->
+            <div class="setting-card">
+              <div class="setting-icon bg-green">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+              </div>
+              <div class="setting-info">
+                <span class="setting-title">Text Size</span>
+                <span class="setting-value" id="fontSizeValue">Normal</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="setting-chevron"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <select id="fontSizeSelect" class="invisible-select">
                 <option value="normal">Normal</option><option value="small">Small</option><option value="large">Large</option><option value="custom">Custom...</option>
               </select>
-              <input type="text" id="customFontSizeInput" placeholder="e.g. 16px" style="display: none; flex: 1;">
             </div>
-          </div>
+            <input type="text" id="customFontSizeInput" placeholder="e.g. 16px" class="custom-setting-input" style="display: none;">
 
-          <div class="field">
-            <span>Line Spacing</span>
-            <div style="display: flex; gap: 8px;">
-              <select id="lineHeightSelect" style="flex: 1;">
+            <!-- Line Spacing -->
+            <div class="setting-card">
+              <div class="setting-icon bg-yellow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg>
+              </div>
+              <div class="setting-info">
+                <span class="setting-title">Line Spacing</span>
+                <span class="setting-value" id="lineHeightValue">Normal</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="setting-chevron"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <select id="lineHeightSelect" class="invisible-select">
                 <option value="normal">Normal</option><option value="compact">Compact</option><option value="relaxed">Relaxed</option><option value="custom">Custom...</option>
               </select>
-              <input type="text" id="customLineHeightInput" placeholder="e.g. 1.5" style="display: none; flex: 1;">
             </div>
-          </div>
+            <input type="text" id="customLineHeightInput" placeholder="e.g. 1.5" class="custom-setting-input" style="display: none;">
 
-          <div class="field">
-            <span>Padding</span>
-            <div style="display: flex; gap: 8px;">
-              <select id="paddingSelect" style="flex: 1;">
+            <!-- Padding -->
+            <div class="setting-card">
+              <div class="setting-icon bg-orange">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="10" height="10" rx="1" ry="1"></rect></svg>
+              </div>
+              <div class="setting-info">
+                <span class="setting-title">Padding</span>
+                <span class="setting-value" id="paddingValue">Normal</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="setting-chevron"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <select id="paddingSelect" class="invisible-select">
                 <option value="normal">Normal</option><option value="compact">Compact</option><option value="relaxed">Relaxed</option><option value="custom">Custom...</option>
               </select>
-              <input type="text" id="customPaddingInput" placeholder="e.g. 40px" style="display: none; flex: 1;">
             </div>
-          </div>
+            <input type="text" id="customPaddingInput" placeholder="e.g. 40px" class="custom-setting-input" style="display: none;">
+            
+            <div class="settings-divider"></div>
 
-          <div class="settings-divider"></div>
-
-          <div class="field">
-            <span>Font Style</span>
-            <select id="fontStyleSelect">
-              <option value="serif">Serif</option><option value="sans">Sans</option><option value="mono">Mono</option><option value="system">System</option>
-              <option value="helvetica">Helvetica</option><option value="verdana">Verdana</option><option value="trebuchet">Trebuchet</option><option value="tahoma">Tahoma</option>
-              <option value="palatino">Palatino</option><option value="garamond">Garamond</option><option value="bookman">Bookman</option><option value="comic">Comic Sans</option>
-              <option value="pacifico">Pacifico</option><option value="caveat">Caveat</option><option value="fredoka">Fredoka</option><option value="bangers">Bangers</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <span>Preview Theme</span>
-            <select id="themeSelect">
-              <option value="paper">Paper</option><option value="dark">Slate</option><option value="sepia">Sepia</option><option value="midnight">Midnight</option>
-              <option value="hacker">Hacker</option><option value="hacker-amber">Amber</option><option value="hacker-cyan">Cyan</option><option value="dracula">Dracula</option>
-              <option value="rose">Rose</option><option value="solarized-dark">Sol Dark</option><option value="solarized-light">Sol Light</option><option value="nord">Nord</option><option value="cyberpunk">Cyberpunk</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <span>Code Theme</span>
-            <select id="codeThemeSelect">
-              <option value="github">GitHub</option><option value="github-dark">GitHub Dark</option><option value="monokai">Monokai</option><option value="vs2015">VS Dark</option><option value="dracula">Dracula</option>
-            </select>
-          </div>
-
-          <div class="settings-divider"></div>
-
-          <label class="field" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="tocCheckbox" style="width: auto; margin: 0;">
-            <span style="margin: 0; user-select: none;">📑 Auto Table of Contents</span>
-          </label>
-
-          <label class="field" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="coverPageCheckbox" style="width: auto; margin: 0;">
-            <span style="margin: 0; user-select: none;">📄 Cover Page</span>
-          </label>
-
-          <label class="field" style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 12px;">
-            <input type="checkbox" id="showBordersCheckbox" checked style="width: auto; margin: 0;">
-            <span style="margin: 0; user-select: none;">Show Page Breaks</span>
-          </label>
-
-          <div class="field">
-            <span>🖼️ Logo (optional)</span>
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <button id="uploadLogoBtn" class="ghost-button" type="button" style="font-size: 0.85rem;">Upload Logo</button>
-              <button id="clearLogoBtn" class="ghost-button" type="button" style="font-size: 0.85rem; display: none;">Clear</button>
-              <input id="logoInput" type="file" accept="image/*" style="display: none;">
-              <img id="logoPreview" style="display: none; height: 28px; border-radius: 4px;" alt="Logo preview">
+            <!-- Font Style -->
+            <div class="setting-card">
+              <div class="setting-info full-width">
+                <span class="setting-title">Font Style</span>
+                <span class="setting-value" id="fontStyleValue">Serif</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="setting-chevron"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <select id="fontStyleSelect" class="invisible-select">
+                <option value="serif">Serif</option><option value="sans">Sans</option><option value="mono">Mono</option><option value="system">System</option>
+                <option value="helvetica">Helvetica</option><option value="verdana">Verdana</option><option value="trebuchet">Trebuchet</option><option value="tahoma">Tahoma</option>
+                <option value="palatino">Palatino</option><option value="garamond">Garamond</option><option value="bookman">Bookman</option><option value="comic">Comic Sans</option>
+                <option value="pacifico">Pacifico</option><option value="caveat">Caveat</option><option value="fredoka">Fredoka</option><option value="bangers">Bangers</option>
+              </select>
             </div>
-          </div>
 
-          <div class="field">
-            <span>🔒 Watermark</span>
-            <input type="text" id="watermarkInput" placeholder="e.g. DRAFT" spellcheck="false">
-          </div>
+            <!-- Preview Theme -->
+            <div class="setting-card">
+              <div class="setting-info full-width">
+                <span class="setting-title">Preview Theme</span>
+                <span class="setting-value" id="themeValue">Paper</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="setting-chevron"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <select id="themeSelect" class="invisible-select">
+                <option value="paper">Paper</option><option value="dark">Slate</option><option value="sepia">Sepia</option><option value="midnight">Midnight</option>
+                <option value="hacker">Hacker</option><option value="hacker-amber">Amber</option><option value="hacker-cyan">Cyan</option><option value="dracula">Dracula</option>
+                <option value="rose">Rose</option><option value="solarized-dark">Sol Dark</option><option value="solarized-light">Sol Light</option><option value="nord">Nord</option><option value="cyberpunk">Cyberpunk</option>
+              </select>
+            </div>
 
-          <div class="actions" style="margin-top: 24px;">
-            <button id="downloadButton" class="primary-button" type="button" style="width: 100%;">Download PDF</button>
+            <!-- Code Theme -->
+            <div class="setting-card">
+              <div class="setting-info full-width">
+                <span class="setting-title">Code Theme</span>
+                <span class="setting-value" id="codeThemeValue">GitHub</span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="setting-chevron"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <select id="codeThemeSelect" class="invisible-select">
+                <option value="github">GitHub</option><option value="github-dark">GitHub Dark</option><option value="monokai">Monokai</option><option value="vs2015">VS Dark</option><option value="dracula">Dracula</option>
+              </select>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <label class="setting-toggle">
+              <span class="toggle-label">Auto Table of Contents</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="tocCheckbox">
+                <span class="slider"></span>
+              </div>
+            </label>
+
+            <label class="setting-toggle">
+              <span class="toggle-label">Cover Page</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="coverPageCheckbox">
+                <span class="slider"></span>
+              </div>
+            </label>
+
+            <label class="setting-toggle">
+              <span class="toggle-label">Show Page Breaks</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="showBordersCheckbox" checked>
+                <span class="slider"></span>
+              </div>
+            </label>
+
+            <div class="setting-card col">
+              <span class="setting-title">Logo (optional)</span>
+              <div class="flex-align" style="gap: 8px; margin-top: 8px;">
+                <button id="uploadLogoBtn" class="ghost-button pill-button small" type="button">Upload Logo</button>
+                <button id="clearLogoBtn" class="ghost-button pill-button small" type="button" style="display: none;">Clear</button>
+                <input id="logoInput" type="file" accept="image/*" style="display: none;">
+                <img id="logoPreview" style="display: none; height: 28px; border-radius: 4px;" alt="Logo preview">
+              </div>
+            </div>
+
+            <div class="setting-card col">
+              <span class="setting-title">Watermark</span>
+              <input type="text" id="watermarkInput" placeholder="e.g. DRAFT" spellcheck="false" class="styled-input" style="margin-top: 8px;">
+            </div>
+
+          </div>
+          
+          <!-- Download button on mobile drawer bottom -->
+          <div class="drawer-footer">
+            <button id="downloadButton" class="primary-button" type="button">Download PDF</button>
           </div>
         </section>
       </section>
