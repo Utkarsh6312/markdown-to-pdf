@@ -2746,6 +2746,8 @@ textarea {
   .info-grid,
   .faq,
   .preview-toolbar,
+  #copyButtonsContainer,
+  .pagination-pills,
   .info-section,
   footer {
     display: none !important;
