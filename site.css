@@ -9,6 +9,11 @@
   --accent: #bb5a2c;
   --accent-strong: #8d3818;
   --shadow: 0 18px 60px rgba(36, 34, 28, 0.12);
+  --green: #10B981;
+  --purple: #8B5CF6;
+  --blue: #3B82F6;
+  --yellow: #F59E0B;
+  --orange: #F97316;
 }
 
 * {

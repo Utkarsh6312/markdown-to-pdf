@@ -352,7 +352,7 @@ function generateCoverPage(markdownText) {
   for (const line of lines) {
     if (!foundTitle && line.match(/^#\s+/)) { foundTitle = true; continue; }
     if (foundTitle && line.trim() && !line.match(/^#{1,6}\s+/)) {
-      subtitle = line.trim();
+      subtitle = typeof marked !== "undefined" && marked.parseInline ? marked.parseInline(line.trim()) : line.trim();
       break;
     }
   }
