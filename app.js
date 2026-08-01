@@ -459,9 +459,8 @@ function updateCopyButtons() {
       btn.type = "button";
       btn.className = "page-pill";
       if (i === 1) btn.classList.add("active");
-      btn.textContent = `Page ${i}`;
+      btn.textContent = `Copy Page ${i}`;
       btn.addEventListener("click", (e) => {
-        // Just visual toggle for now, actual copy behavior might need confirmation
         document.querySelectorAll(".page-pill").forEach(p => p.classList.remove("active"));
         e.target.classList.add("active");
         copyPageAsImage(i, pageHeight);

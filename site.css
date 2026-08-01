@@ -2415,22 +2415,7 @@ textarea {
     margin-bottom: 24px;
   }
   
-  /* Make textarea collapse by default on mobile */
-  .textarea-fade,
-  .view-more-btn {
-    display: flex;
-  }
-  .textarea-container.expanded .textarea-fade,
-  .textarea-container.expanded .view-more-btn {
-    display: none;
-  }
-  .textarea-container textarea {
-    max-height: 140px; /* Collapsed height */
-  }
-  .textarea-container.expanded textarea {
-    max-height: none;
-    min-height: 300px;
-  }
+  /* Textarea collapse removed per user request */
 }
 
 /* =====================================================================
@@ -2479,67 +2464,10 @@ textarea {
     padding: 12px 14px;
     background: rgba(255, 255, 255, 0.7);
     color: var(--ink);
-    min-height: 320px;
+    min-height: 400px;
   }
   
-  .pagination-pills { display: none; }
-  
-  .setting-card {
-    background: transparent;
-    border: none;
-    padding: 0;
-    box-shadow: none;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-  .setting-card.col { margin-bottom: 24px; }
-  .setting-icon, .setting-value, .setting-chevron { display: none; }
-  
-  .setting-title {
-    font-size: 0.92rem;
-    color: var(--muted);
-    font-weight: normal;
-  }
-  
-  .invisible-select {
-    position: static;
-    opacity: 1;
-    cursor: auto;
-    appearance: auto;
-    -webkit-appearance: auto;
-    width: 100%;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 12px 14px;
-    background: rgba(255, 255, 255, 0.7);
-    color: var(--ink);
-  }
-  
-  .setting-toggle {
-    background: transparent;
-    border: none;
-    padding: 0;
-    justify-content: flex-start;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .setting-toggle .toggle-label {
-    font-size: 0.92rem;
-    color: var(--muted);
-    font-weight: normal;
-  }
-  .setting-toggle .toggle-switch {
-    display: none;
-  }
-  .setting-toggle input[type="checkbox"] {
-    position: static;
-    opacity: 1;
-    width: auto;
-    height: auto;
-    margin: 0;
-  }
+  .pagination-pills { display: flex; } /* Re-enable pagination pills on desktop */
   
   .mobile-drawer {
     position: sticky !important;
