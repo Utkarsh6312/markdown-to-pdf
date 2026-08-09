@@ -2175,7 +2175,7 @@ textarea {
   width: 100%;
   padding: 12px;
   resize: none;
-  min-height: 120px;
+  min-height: 65vh;
   background: transparent;
   flex: 1;
 }
@@ -2728,10 +2728,6 @@ textarea {
 
 @media print {
 
-  @page {
-    margin: 0;
-  }
-
   html, body {
     padding: 0 !important;
     margin: 0 !important;
@@ -2808,64 +2804,17 @@ textarea {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
-    padding: var(--custom-print-margin, 20mm) !important;
     box-shadow: none !important;
     border: 0 !important;
     border-radius: 0 !important;
     min-height: auto !important;
     height: auto !important;
     overflow: visible !important;
-    background: white !important;
-    background-image: none !important;
     /* Force real text rendering for selectable PDF text */
     -webkit-text-stroke: 0 !important;
     text-shadow: none !important;
     -webkit-font-smoothing: subpixel-antialiased !important;
     text-rendering: optimizeLegibility !important;
-  }
-
-  /* Strip all theme backgrounds during print so text stays real */
-  .preview-document[data-theme] {
-    background: white !important;
-    background-image: none !important;
-    color: black !important;
-  }
-
-  /* Keep dark theme headings/links readable in print */
-  .preview-document[data-theme] h1,
-  .preview-document[data-theme] h2,
-  .preview-document[data-theme] h3,
-  .preview-document[data-theme] h4,
-  .preview-document[data-theme] h5,
-  .preview-document[data-theme] h6 {
-    color: black !important;
-  }
-
-  .preview-document[data-theme] a {
-    color: #0000EE !important;
-  }
-
-  .preview-document[data-theme] code {
-    background: #f5f5f5 !important;
-    color: #333 !important;
-  }
-
-  .preview-document[data-theme] pre {
-    background: #f5f5f5 !important;
-    color: #333 !important;
-  }
-
-  .preview-document[data-theme] blockquote {
-    border-color: #ccc !important;
-    color: #333 !important;
-    background: transparent !important;
-  }
-
-  .preview-document[data-theme] th,
-  .preview-document[data-theme] td {
-    border-color: #ccc !important;
-    color: black !important;
-    background: transparent !important;
   }
 
   /* Hide the artificial page borders during print */
@@ -2891,7 +2840,6 @@ textarea {
 
   .preview-document table,
   .preview-document img,
-  .preview-document pre,
   .preview-document blockquote {
     page-break-inside: avoid;
     break-inside: avoid;
